@@ -6,5 +6,6 @@
 Instruction* generateRandomInstructions(int);
 Instruction* generateMultiplicationInstructions(int, int);
 Instruction* readInstructions(char*, int*);
+Instruction* menu();
 
 #endif // !GENERATOR_H

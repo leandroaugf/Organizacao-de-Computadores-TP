@@ -19,7 +19,7 @@ Instruction* generateRandomInstructions(int ramSize) {
     Instruction* instructions = (Instruction*) malloc(10 * sizeof(Instruction));
 
     for (int i=0; i<9; i++){
-        instructions[i].opcode = rand() % 4; //0, 1, 2, 3
+        instructions[i].opcode = rand() % 9; //0, 1, 2, 3, 4, 5, 6, 7, 8
         instructions[i].info1 = rand() % ramSize; //0 ... RAM_SIZE
         do {
             instructions[i].info2 = rand() % ramSize; //0 ... RAM_SIZE
@@ -53,6 +53,33 @@ Instruction* readInstructions(char* fileName, int* ramSize) {
         i++;
     }
     fclose(file); // Fechando o arquivo
+
+    return instructions;
+}
+
+Instruction* menu(){
+    int op=0;
+
+    printf("\nMENU\n");
+    printf("1- SOMA\n2- SUBTRAÇÂO\n3- MULTIPLICAÇÃO\n4- DIVISÃO\n6- EXPONENCIAÇÃO\n5- FATORAÇÃO\n7- SEQUÊNCIA DE FIBONACCI\n8- RAIZ QUADRADA (APROXIMADA)");
+    do {
+      printf("\nInsira um número inteiro entre 1 e 8: \n");
+      scanf("%d", &op);
+      if(op<1||op>8)
+        printf("\nNúmero Inválido!!\nDigite novamente!!");
+    } while (op < 1 || op > 8);
+    
+    Instruction* instructions = (Instruction*) malloc(2 * sizeof(Instruction));
+
+    instructions[0].opcode=op;
+    instructions[0].info1=0;
+    instructions[0].info2=1;
+    instructions[0].info3=0;
+
+    instructions[1].opcode =-1;
+    instructions[1].info1 = -1;
+    instructions[1].info2 = -1;
+    instructions[1].info3 = -1;
 
     return instructions;
 }

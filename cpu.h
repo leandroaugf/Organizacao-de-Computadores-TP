@@ -21,6 +21,6 @@ typedef struct {
 void start(Machine*, Instruction*, int);
 void stop(Machine*);
 void run(Machine*);
-void printRAM(Machine*);
+void printRAM(Machine*, int);
 
 #endif // !CPU_H
