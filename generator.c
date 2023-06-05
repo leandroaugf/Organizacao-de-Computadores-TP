@@ -117,33 +117,33 @@ Instruction *generateDiviInstructions(int divisor, int dividendo)
     instructions[1].info3 = -1;
 
     // Gera instrucoes para realizar a divisao
-    int i = 2;
-    while (instructions[i - 2].info1 >= instructions[i - 1].info1)
+    int i = 0;
+    while ((i + 1) * divisor <= dividendo)
     {
-        instructions[i].opcode = 2;    // Subtraindo
-        instructions[i].info1 = i - 2; // Endereco da RAM com o dividendo parcial
-        instructions[i].info2 = 1;     // Endereco da RAM com o valor divisor
-        instructions[i].info3 = i - 1; // Endereco da RAM onde o resultado parcial sera armazenado
+        instructions[i + 2].opcode = 2;    // Subtraindo
+        instructions[i + 2].info1 = 0; // Endereco da RAM com o dividendo parcial
+        instructions[i + 2].info2 = 1;     // Endereco da RAM com o valor divisor
+        instructions[i + 2].info3 = 0; // Endereco da RAM onde o resultado parcial sera armazenado
         i++;                           // Contador do resultado
     }
 
     // Imprime o resultado da divisao
-    instructions[i].opcode = 0; // Levando informacao para a RAM
-    instructions[i].info1 = 0;  // Valor especial para indicar o fim da execucao
-    instructions[i].info2 = i;  // Endereco da RAM com o resultado final
-    instructions[i].info3 = -1;
+    instructions[i + 2].opcode = 0; // Levando informacao para a RAM
+    instructions[i + 2].info1 = 0;  // Valor especial para indicar o fim da execucao
+    instructions[i + 2].info2 = i + 2;  // Endereco da RAM com o resultado final
+    instructions[i + 2].info3 = -1;
 
     // Armazena o dividendo e o resultado na RAM
-    instructions[i + 1].opcode = 0; // Salvar na memoria
-    instructions[i + 1].info1 = dividendo; // Valor dividendo
-    instructions[i + 1].info2 = 22; // Endereco da RAM onde o dividendo sera armazenado
-    instructions[i + 1].info3 = -1;
+    instructions[i + 3].opcode = 0; // Salvar na memoria
+    instructions[i + 3].info1 = dividendo; // Valor dividendo
+    instructions[i + 3].info2 = i + 3; // Endereco da RAM onde o dividendo sera armazenado
+    instructions[i + 3].info3 = -1;
 
     // Inserindo a ultima instrucao do programa
-    instructions[i + 3].opcode = -1;
-    instructions[i + 3].info1 = -1;
-    instructions[i + 3].info2 = -1;
-    instructions[i + 3].info3 = -1;
+    instructions[i + 4].opcode = -1;
+    instructions[i + 4].info1 = -1;
+    instructions[i + 4].info2 = -1;
+    instructions[i + 4].info3 = -1;
 
     return instructions;
 }
