@@ -7,6 +7,11 @@
 
 int main(int argc, char**argv) {
 
+    double tempo_exec;
+    clock_t inicio, fim;
+
+    inicio = clock();
+
     srand(time(NULL));   // Inicializacao da semente para os numeros aleatorios.
 
     if (argc != 3) {
@@ -32,7 +37,10 @@ int main(int argc, char**argv) {
         instructions = generateMultiInstructions(rand() % 10 + 1, rand() % 10 + 1);
     } else if(strcmp(argv[1], "divisao") == 0){
         ramSize = atoi(argv[2]);
-        instructions = generateDiviInstructions(2,10);
+        instructions = generateDiviInstructions(5, 100);
+    } else if(strcmp(argv[1], "exponencial") == 0){
+        ramSize = atoi(argv[2]);
+        instructions = generateExpoInstructions(4, 2);
     } else {
         printf("Opcao invalida.\n");
         return 0;
@@ -45,5 +53,10 @@ int main(int argc, char**argv) {
     printRAM(&machine);
     stop(&machine);
     printf("Finalizando a maquina...\n");
-    return 0;
+
+    fim = clock();
+    tempo_exec = (double)(fim - inicio) / CLOCKS_PER_SEC;
+    printf("Tempo de execucao: %fs\n", tempo_exec);
+
+     return 0;
 }

@@ -147,3 +147,54 @@ Instruction *generateDiviInstructions(int divisor, int dividendo)
 
     return instructions;
 }
+
+Instruction *generateExpoInstructions(int base, int expoente){
+    Instruction *instructions = NULL;
+
+    if(expoente == 0){
+        instructions = (Instruction*)malloc(4 * sizeof(Instruction));
+        
+        instructions[0].opcode = 0; // Levando informacoes para a RAM
+        instructions[0].info1 = 1; // Valor constante 1
+        instructions[0].info2 = 0; // Endereco da RAM onde o valor sera armazenado
+        instructions[0].info3 = 0;
+
+        instructions[1].opcode = -1; // Fim da execucao
+        instructions[1].info1 = -1; 
+        instructions[1].info2 = -1;
+        instructions[1].info3 = -1;
+
+        return instructions;
+    }
+
+    Instruction *multiInstructions = generateMultiInstructions(base, expoente);
+    int numInstructions = expoente + 3;
+
+    instructions = (Instruction *)malloc(numInstructions * sizeof(Instruction));
+
+    instructions[0].opcode = 0;  // Levando informacoes para a RAM
+    instructions[0].info1 = base; // Valor a ser multiplicado
+    instructions[0].info2 = 0; // Endereco da RAM onde o valor sera armazenado
+    instructions[0].info3 = 0;
+
+    // Copia instrucoes da multiplicacao
+    for(int i = 1; i <= expoente; i++){
+        instructions[i] = multiInstructions[i - 1];
+    } 
+
+    // Armazenando o resultado da exponenciacao 
+    instructions[expoente + 1].opcode = 0; // Levando informacoes para a RAM
+    instructions[expoente + 1].info1 = 0; // Valor especial para indicar o fim da execucao
+    instructions[expoente + 1].info2 = expoente; // Endereco da RAM com resultado final
+    instructions[expoente + 1].info3 = -1;
+
+    // Fim da execucao
+    instructions[expoente + 2].opcode = -1;
+    instructions[expoente + 2].info1 = -1;
+    instructions[expoente + 2].info2 = -1;
+    instructions[expoente + 2].info3 = -1;
+
+    free(multiInstructions); // Libera a memoria alocada pra multiplicacao;
+
+    return instructions;
+}
