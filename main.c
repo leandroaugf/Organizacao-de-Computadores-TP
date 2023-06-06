@@ -23,7 +23,7 @@ int main(int argc, char**argv) {
         return 0;
     }
 
-    int ramSize;
+    int ramSize; int tam;
     Machine machine;
     Instruction *instructions;
 
@@ -40,7 +40,23 @@ int main(int argc, char**argv) {
         instructions = generateDiviInstructions(5, 100);
     } else if(strcmp(argv[1], "exponencial") == 0){
         ramSize = atoi(argv[2]);
-        instructions = generateExpoInstructions(4, 2);
+        int RAMContent1 = rand() % 30 + 1;
+        int RAMContent2 = rand() % 4 + 1;
+        tam = RAMContent2 - 1;
+        // Instruction *instructions2 = malloc(tam * sizeof(Instruction));
+        for (int i = 0; i < tam; i++) {
+            // [COMO GRAVAR RAMC1?]
+            instructions = generateMultiInstructions(RAMContent1, RAMContent2);
+            if (i == 0) {
+                start(&machine, instructions, ramSize);
+            }
+            else { // [EXECUÇÕES POSTERIORES]
+                attInstructions(&machine, instructions); 
+            }
+            run(&machine);
+            RAMContent1 = machine.RAM.items[2];
+            free(instructions);
+        }
     } else {
         printf("Opcao invalida.\n");
         return 0;

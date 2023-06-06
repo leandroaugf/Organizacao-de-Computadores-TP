@@ -4,19 +4,6 @@
 
 Instruction *generateRandomInstructions(int ramSize)
 {
-    // 01|22|13|45 => isto é uma instrução
-    // 02|33|12|01 => isto é outra instrução
-
-    // 0 => salvar na memória
-    // 1 => opcode => somar
-    // 2 => opcode => subtrair
-    //-1 => halt
-
-    // 22 => significa um endereço da RAM (10 endereço)
-    // 13 => significa 2o endereço
-    // 45 => significa 3o endereco
-    // ramSize => ESTA FORA DO INTERVALO DE 0 A ramSize DA MEMÓRIA RAM
-
     Instruction *instructions = (Instruction *)malloc(10 * sizeof(Instruction));
 
     for (int i = 0; i < 9; i++)
@@ -75,6 +62,7 @@ void store_instructions(Instruction instruction, int *ramSize)
 
 Instruction *generateMultiInstructions(int multiplicando, int multiplicador)
 {
+    printf("MULTIPLICAÇÃO: %d com %d:\n", multiplicando, multiplicador);
     Instruction *instructions = (Instruction *)malloc((3 + multiplicador) * sizeof(Instruction));
 
     // Gera instrucoes para carregar valores iniciais na RAM
@@ -100,7 +88,9 @@ Instruction *generateMultiInstructions(int multiplicando, int multiplicador)
 
     return instructions;
 }
-
+void attInstructions(Machine *machine, Instruction *inst) {
+    machine->instructions = inst;
+}
 Instruction *generateDiviInstructions(int divisor, int dividendo)
 {
     Instruction *instructions = (Instruction *)malloc((5 + dividendo / divisor) * sizeof(Instruction));
@@ -144,57 +134,6 @@ Instruction *generateDiviInstructions(int divisor, int dividendo)
     instructions[i + 4].info1 = -1;
     instructions[i + 4].info2 = -1;
     instructions[i + 4].info3 = -1;
-
-    return instructions;
-}
-
-Instruction *generateExpoInstructions(int base, int expoente){
-    Instruction *instructions = NULL;
-
-    if(expoente == 0){
-        instructions = (Instruction*)malloc(4 * sizeof(Instruction));
-        
-        instructions[0].opcode = 0; // Levando informacoes para a RAM
-        instructions[0].info1 = 1; // Valor constante 1
-        instructions[0].info2 = 0; // Endereco da RAM onde o valor sera armazenado
-        instructions[0].info3 = 0;
-
-        instructions[1].opcode = -1; // Fim da execucao
-        instructions[1].info1 = -1; 
-        instructions[1].info2 = -1;
-        instructions[1].info3 = -1;
-
-        return instructions;
-    }
-
-    Instruction *multiInstructions = generateMultiInstructions(base, expoente);
-    int numInstructions = expoente + 3;
-
-    instructions = (Instruction *)malloc(numInstructions * sizeof(Instruction));
-
-    instructions[0].opcode = 0;  // Levando informacoes para a RAM
-    instructions[0].info1 = base; // Valor a ser multiplicado
-    instructions[0].info2 = 0; // Endereco da RAM onde o valor sera armazenado
-    instructions[0].info3 = 0;
-
-    // Copia instrucoes da multiplicacao
-    for(int i = 1; i <= expoente; i++){
-        instructions[i] = multiInstructions[i - 1];
-    } 
-
-    // Armazenando o resultado da exponenciacao 
-    instructions[expoente + 1].opcode = 0; // Levando informacoes para a RAM
-    instructions[expoente + 1].info1 = 0; // Valor especial para indicar o fim da execucao
-    instructions[expoente + 1].info2 = expoente; // Endereco da RAM com resultado final
-    instructions[expoente + 1].info3 = -1;
-
-    // Fim da execucao
-    instructions[expoente + 2].opcode = -1;
-    instructions[expoente + 2].info1 = -1;
-    instructions[expoente + 2].info2 = -1;
-    instructions[expoente + 2].info3 = -1;
-
-    free(multiInstructions); // Libera a memoria alocada pra multiplicacao;
 
     return instructions;
 }
